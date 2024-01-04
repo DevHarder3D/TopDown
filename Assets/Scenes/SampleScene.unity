@@ -521,6 +521,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
+  initialSpeed: 0
+  runSpeed: 8
   direction: {x: 0, y: 0}
 --- !u!212 &1449226933
 SpriteRenderer:

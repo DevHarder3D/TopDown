@@ -7,12 +7,16 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D playerRB;
     private Animator playerAnim;
     [SerializeField] private float speed;
+    [SerializeField] private float initialSpeed;
+    [SerializeField] private float runSpeed;
     [SerializeField] private Vector2 direction;
 
     void Start()
     {
         playerRB = GetComponent<Rigidbody2D>();
         playerAnim = GetComponent<Animator>();
+
+        initialSpeed = speed;
     }
 
     void Update()
@@ -29,6 +33,8 @@ public class PlayerController : MonoBehaviour
         }
 
         Flip();
+
+        PlayerRun();
     }
 
     private void FixedUpdate()
@@ -45,6 +51,19 @@ public class PlayerController : MonoBehaviour
         else if (direction.x > 0)
         {
             transform.eulerAngles = new Vector3(0, 0);
+        }
+    }
+
+    void PlayerRun()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            speed = runSpeed;
+        }
+
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            speed = initialSpeed;
         }
     }
 }
