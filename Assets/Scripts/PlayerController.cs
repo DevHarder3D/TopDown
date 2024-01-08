@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float runSpeed;
     [SerializeField] private Vector2 direction;
 
+    private bool isAttack = false;
+
     void Start()
     {
         playerRB = GetComponent<Rigidbody2D>();
@@ -21,7 +23,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        direction = new Vector2 (Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+        direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         if(direction.sqrMagnitude > 0)
         {
@@ -35,11 +37,18 @@ public class PlayerController : MonoBehaviour
         Flip();
 
         PlayerRun();
+
+        Attack();
+
+        if(isAttack)
+        {
+            playerAnim.SetInteger("Movement", 2);
+        }
     }
 
     private void FixedUpdate()
     {
-        playerRB.MovePosition(playerRB.position + direction * speed * Time.fixedDeltaTime);
+        playerRB.MovePosition(playerRB.position + direction.normalized * speed * Time.fixedDeltaTime);
     }
 
     void Flip()
@@ -63,6 +72,20 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
+            speed = initialSpeed;
+        }
+    }
+
+    void Attack()
+    {
+        if(Input.GetKeyDown(KeyCode.LeftControl) || Input.GetMouseButtonDown(0))
+        {
+            isAttack = true;
+            speed = 0;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftControl) || Input.GetMouseButtonUp(0))
+        {
+            isAttack = false;
             speed = initialSpeed;
         }
     }
